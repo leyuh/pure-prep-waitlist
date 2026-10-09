@@ -199,6 +199,36 @@ fieldset { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
   box-shadow: 0 0 0 1px rgba(90, 122, 82, 0.25), var(--shadow-soft);
 }
 .choice input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rank-help { margin: -2px 0 10px; font-size: 0.86rem; color: var(--muted); }
+.rank-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.rank-fallback { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 0.95rem; font-weight: 600; }
+.rank-fallback .input { width: auto; min-width: 72px; min-height: 44px; padding: 8px 12px; }
+.rank-item {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px;
+  padding: 10px 14px 10px 10px; border-radius: 12px; text-align: left; cursor: pointer;
+  border: 1px solid var(--border); background: var(--card); color: var(--text);
+  font: 600 0.97rem/1.25 var(--font-body); box-shadow: var(--shadow-soft);
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.rank-item:hover { border-color: var(--sage); }
+.rank-badge {
+  flex: 0 0 32px; width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center; border: 2px dashed var(--border); background: var(--paper);
+  font: 600 1rem/1 var(--font-display); color: var(--paper);
+}
+.rank-item[aria-pressed="true"] {
+  border-color: var(--accent); background: var(--sage-soft); color: var(--accent-deep);
+  box-shadow: 0 0 0 1px rgba(90, 122, 82, 0.25), var(--shadow-soft);
+}
+.rank-item[aria-pressed="true"] .rank-badge { border: 0; background: var(--accent-deep); }
+.rank-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.rank-status { margin: 0; font-size: 0.84rem; color: var(--muted); }
+.rank-reset {
+  flex: none; background: none; border: 0; padding: 8px 2px; cursor: pointer;
+  font: 600 0.88rem/1 var(--font-body); color: var(--accent-deep); text-decoration: underline; text-underline-offset: 3px;
+}
+.rank-reset:hover { color: var(--accent); }
 .form-actions { margin-top: 6px; }
 .form-actions .btn { width: 100%; }
 .fine { font-size: 0.84rem; color: var(--muted); margin: 12px 0 0; text-align: center; }
@@ -250,5 +280,4 @@ fieldset { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
   .step h3 { margin-top: 6px; }
   .join-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start; }
   .card { padding: 34px 32px 28px; }
-  .choices.goals { grid-template-columns: 1fr 1fr; }
 }

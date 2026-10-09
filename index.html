@@ -144,13 +144,34 @@
               <input class="input" id="first-name" name="entry.265234392" type="text" autocomplete="given-name" autocapitalize="words" maxlength="80" />
             </div>
 
-            <fieldset>
-              <legend>Main goal <span class="opt">(optional)</span></legend>
-              <div class="choices goals">
-                <label class="choice"><input type="radio" name="entry.1957031590" value="Lose fat" /><span>Lose fat</span></label>
-                <label class="choice"><input type="radio" name="entry.1957031590" value="Maintain" /><span>Maintain</span></label>
-                <label class="choice"><input type="radio" name="entry.1957031590" value="Gain weight" /><span>Gain weight</span></label>
-                <label class="choice"><input type="radio" name="entry.1957031590" value="Just eat cleaner" /><span>Just eat cleaner</span></label>
+            <fieldset class="rank" id="rank">
+              <legend>Rank what matters most to you in a meal plan <span class="opt">(optional)</span></legend>
+              <p class="rank-help" id="rank-help">Pick a number for each item, 1 = most important. Each number can be used once.</p>
+              <ol class="rank-list" aria-describedby="rank-help">
+                <li class="rank-row">
+                  <label class="rank-fallback" for="rank-0"><span>Hitting my macro/calorie goals</span><select class="input rank-select" id="rank-0" name="entry.1957031590"><option value="">&ndash;</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+                  <button type="button" class="rank-item" data-target="rank-0" aria-pressed="false" hidden><span class="rank-badge" aria-hidden="true"></span><span class="rank-text">Hitting my macro/calorie goals</span></button>
+                </li>
+                <li class="rank-row">
+                  <label class="rank-fallback" for="rank-1"><span>Eating nutrient-dense foods</span><select class="input rank-select" id="rank-1" name="entry.904367932"><option value="">&ndash;</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+                  <button type="button" class="rank-item" data-target="rank-1" aria-pressed="false" hidden><span class="rank-badge" aria-hidden="true"></span><span class="rank-text">Eating nutrient-dense foods</span></button>
+                </li>
+                <li class="rank-row">
+                  <label class="rank-fallback" for="rank-2"><span>Sticking to a budget</span><select class="input rank-select" id="rank-2" name="entry.663914684"><option value="">&ndash;</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+                  <button type="button" class="rank-item" data-target="rank-2" aria-pressed="false" hidden><span class="rank-badge" aria-hidden="true"></span><span class="rank-text">Sticking to a budget</span></button>
+                </li>
+                <li class="rank-row">
+                  <label class="rank-fallback" for="rank-3"><span>Saving time</span><select class="input rank-select" id="rank-3" name="entry.1113407965"><option value="">&ndash;</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+                  <button type="button" class="rank-item" data-target="rank-3" aria-pressed="false" hidden><span class="rank-badge" aria-hidden="true"></span><span class="rank-text">Saving time</span></button>
+                </li>
+                <li class="rank-row">
+                  <label class="rank-fallback" for="rank-4"><span>Enjoying what I eat</span><select class="input rank-select" id="rank-4" name="entry.725370958"><option value="">&ndash;</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+                  <button type="button" class="rank-item" data-target="rank-4" aria-pressed="false" hidden><span class="rank-badge" aria-hidden="true"></span><span class="rank-text">Enjoying what I eat</span></button>
+                </li>
+              </ol>
+              <div class="rank-tools" hidden>
+                <p class="rank-status" id="rank-status" aria-live="polite"></p>
+                <button type="button" class="rank-reset" id="rank-reset">Reset</button>
               </div>
             </fieldset>
 
@@ -205,6 +226,59 @@
     var VIEW_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeQD9_1A7cSwFVOtUvRsVN56fzPvv_TGy_0XYpSOWCVKMdVaQ/viewform';
     var EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[^\s@.]{2,}$/;
 
+    // Ranking: tap items in order of importance. The selects stay the source of truth
+    // (and are the no-JS fallback); the tap buttons just set them.
+    var rankBox = document.getElementById('rank');
+    var rankSelects = [].slice.call(rankBox.querySelectorAll('.rank-select'));
+    var rankButtons = [].slice.call(rankBox.querySelectorAll('.rank-item'));
+    var rankStatus = document.getElementById('rank-status');
+    var MAX_RANK = rankSelects.length;
+    var ORD = ['', '1st', '2nd', '3rd', '4th', '5th'];
+
+    function rankedCount() {
+      return rankSelects.filter(function (s) { return s.value; }).length;
+    }
+    function renderRanks() {
+      rankButtons.forEach(function (b) {
+        var sel = document.getElementById(b.getAttribute('data-target'));
+        var r = sel.value;
+        var text = b.querySelector('.rank-text').textContent;
+        b.querySelector('.rank-badge').textContent = r || '';
+        b.setAttribute('aria-pressed', r ? 'true' : 'false');
+        b.setAttribute('aria-label', r ? text + ', ranked ' + r + '. Tap to clear.' : text + ', not ranked. Tap to rank.');
+      });
+      var n = rankedCount();
+      rankStatus.textContent = n === 0 ? 'Tap items in order of importance.'
+        : n === MAX_RANK ? 'All ranked. Tap one to change it.'
+        : n + ' of ' + MAX_RANK + ' ranked. Tap the ' + ORD[n + 1] + ' most important next, or skip.';
+    }
+    function clearRank(sel) {
+      var old = +sel.value;
+      if (!old) return;
+      sel.value = '';
+      // Close the gap so ranks stay 1..n with no repeats.
+      rankSelects.forEach(function (s) { if (+s.value > old) s.value = String(+s.value - 1); });
+    }
+    rankButtons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var sel = document.getElementById(b.getAttribute('data-target'));
+        if (sel.value) clearRank(sel);
+        else sel.value = String(rankedCount() + 1);
+        renderRanks();
+      });
+    });
+    document.getElementById('rank-reset').addEventListener('click', function () {
+      rankSelects.forEach(function (s) { s.value = ''; });
+      renderRanks();
+      if (rankButtons[0]) rankButtons[0].focus();
+    });
+    rankBox.classList.add('is-tap');
+    rankSelects.forEach(function (s) { s.parentNode.hidden = true; });
+    rankButtons.forEach(function (b) { b.hidden = false; });
+    rankBox.querySelector('.rank-tools').hidden = false;
+    document.getElementById('rank-help').textContent = 'Tap items in order of importance: first tap = 1 (most important). Tap again to clear. Rank as many as you like, or skip.';
+    renderRanks();
+
     function setEmailError(msg) {
       emailError.textContent = msg;
       if (msg) email.setAttribute('aria-invalid', 'true');
@@ -227,7 +301,10 @@
       var nameField = document.getElementById('first-name');
       nameField.value = nameField.value.trim();
       var firstName = nameField.value;
-      var body = new URLSearchParams(new FormData(form)).toString();
+      var params = new URLSearchParams(new FormData(form));
+      // Send one field per ranked row only; leave unranked rows out.
+      rankSelects.forEach(function (s) { if (!s.value) params.delete(s.name); });
+      var body = params.toString();
 
       button.disabled = true;
       button.textContent = 'Sending\u2026';
