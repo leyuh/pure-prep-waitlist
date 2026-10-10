@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pure Prep</title>
   <meta name="robots" content="noindex" />
+  <link rel="icon" href="/waitlist/favicon.ico?v=2" sizes="any" />
   <script>
-    (function () {
-      var home = /\.github\.io$/.test(location.hostname) ? '/pure-prep-waitlist/' : '/';
-      location.replace(home);
-    })();
+    // Unknown paths go to the waitlist, keeping the query string and hash.
+    location.replace('/waitlist/' + location.search + location.hash);
   </script>
-  <noscript><meta http-equiv="refresh" content="0; url=/" /></noscript>
+  <noscript><meta http-equiv="refresh" content="0; url=/waitlist/" /></noscript>
   <style>
     body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4efe6; color: #2f3a2f;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -19,6 +18,6 @@
   </style>
 </head>
 <body>
-  <p>Page not found. <a href="/">Go to Pure Prep</a></p>
+  <p>Page not found. <a href="/waitlist/">Go to the Pure Prep waitlist</a></p>
 </body>
 </html>
