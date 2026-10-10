@@ -16,16 +16,51 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Pure Prep | Simple whole-food meal plans built to your macros" />
   <meta name="twitter:description" content="Low-ingredient whole-food meal plans built to your calories and macros. Free to try. Join the waitlist." />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta property="og:image" content="https://pureprep.app/assets/icon-512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:image:alt" content="Pure Prep leaf P logo" />
+  <meta name="twitter:image" content="https://pureprep.app/assets/icon-512.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v=2" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png?v=2" />
+  <link rel="icon" href="favicon.ico?v=2" sizes="any" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
   <a class="skip" href="#join">Skip to the sign-up form</a>
+  <div class="leaves" aria-hidden="true">
+    <svg width="0" height="0" class="leaf-defs" focusable="false">
+      <defs>
+        <symbol id="leaf" viewBox="-50 -100 100 200">
+          <path d="M0-96C40-64 50-14 32 38 21 68 8 86 0 96-8 86-21 68-32 38-50-14-40-64 0-96Z"/>
+          <path class="vein" d="M0-80V92M0-40 22-62M0-40-22-62M0 0 28-24M0 0-28-24M0 40 24 18M0 40-24 18"/>
+        </symbol>
+        <symbol id="sprig" viewBox="0 0 400 400">
+          <path class="stem" d="M60 390C120 300 170 220 250 150S350 60 390 20"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(130 290) rotate(-120) scale(.62)"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(150 270) rotate(-20) scale(.7)"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(215 190) rotate(-115) scale(.6)"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(245 165) rotate(-5) scale(.66)"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(305 105) rotate(-100) scale(.5)"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(330 85) rotate(10) scale(.55)"/>
+          <use href="#leaf" x="-50" y="-100" width="100" height="200" transform="translate(385 30) rotate(45) scale(.45)"/>
+        </symbol>
+      </defs>
+    </svg>
+    <svg class="lf lf-1" viewBox="0 0 400 400"><use href="#sprig"/></svg>
+    <svg class="lf lf-2" viewBox="-50 -100 100 200"><use href="#leaf"/></svg>
+    <svg class="lf lf-3" viewBox="0 0 400 400"><use href="#sprig"/></svg>
+    <svg class="lf lf-4" viewBox="-50 -100 100 200"><use href="#leaf"/></svg>
+    <svg class="lf lf-5" viewBox="0 0 400 400"><use href="#sprig"/></svg>
+  </div>
+
 
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="./" aria-label="Pure Prep home">
-        <span class="mark" aria-hidden="true">P</span>
+        <img class="mark" src="assets/logo-mark-112.png?v=2" alt="" width="36" height="36" />
         <span class="brand-name">Pure Prep</span>
       </a>
       <a class="header-link" href="#join">Join the waitlist</a>
@@ -46,15 +81,47 @@
           </div>
         </div>
 
-        <aside class="plate" aria-label="The four meal templates">
-          <p class="plate-label">Four simple templates</p>
-          <ol>
-            <li><strong>Savory bowl</strong><span>protein, carb, veg</span></li>
-            <li><strong>Yogurt bowl</strong><span>Greek yogurt, fruit</span></li>
-            <li><strong>Smoothie</strong><span>blend and go</span></li>
-            <li><strong>Oatmeal</strong><span>warm or overnight</span></li>
+        <aside class="plate day" aria-labelledby="day-title">
+          <div class="day-top">
+            <p class="plate-label" id="day-title">An example day</p>
+            <span class="day-chip">3 meals</span>
+          </div>
+          <ol class="meals">
+            <li class="meal">
+              <div class="meal-head"><strong>Banana-raisin protein oats</strong><span class="kcal">681 kcal</span></div>
+              <ul class="ings">
+                <li><b>&frac34; cup</b> oats (60 g)</li><li><b>1</b> banana</li><li><b>2 tbsp</b> raisins (20 g)</li><li><b>1 tsp</b> cinnamon</li><li><b>1 tbsp</b> maple syrup</li><li><b>1 scoop</b> protein powder</li><li><b>1 cup</b> 2% milk</li>
+              </ul>
+              <p class="macros"><span class="m p"><i aria-hidden="true"></i>P 42 g</span><span class="m c"><i aria-hidden="true"></i>C 112 g</span><span class="m f"><i aria-hidden="true"></i>F 11 g</span></p>
+            </li>
+            <li class="meal">
+              <div class="meal-head"><strong>Ground beef &amp; sweet potato bowl</strong><span class="kcal">790 kcal</span></div>
+              <ul class="ings">
+                <li><b>7 oz</b> cooked 93% lean ground beef</li><li><b>10 oz</b> sweet potato (285 g)</li><li><b>&frac12; cup</b> low-fat cottage cheese</li><li><b>2 oz</b> avocado (57 g)</li><li><b>2 tsp</b> honey</li>
+              </ul>
+              <p class="macros"><span class="m p"><i aria-hidden="true"></i>P 68 g</span><span class="m c"><i aria-hidden="true"></i>C 75 g</span><span class="m f"><i aria-hidden="true"></i>F 25 g</span></p>
+            </li>
+            <li class="meal">
+              <div class="meal-head"><strong>Mango-berry Greek yogurt bowl</strong><span class="kcal">639 kcal</span></div>
+              <ul class="ings">
+                <li><b>1&frac12; cups</b> 2% Greek yogurt (340 g)</li><li><b>1 cup</b> frozen mango</li><li><b>1 cup</b> frozen mixed berries</li><li><b>2 tsp</b> cacao powder</li><li><b>&frac14; cup</b> walnuts (30 g)</li>
+              </ul>
+              <p class="macros"><span class="m p"><i aria-hidden="true"></i>P 44 g</span><span class="m c"><i aria-hidden="true"></i>C 63 g</span><span class="m f"><i aria-hidden="true"></i>F 28 g</span></p>
+            </li>
           </ol>
-          <p class="plate-foot">Rotating menus, prep steps, and an optional grocery list.</p>
+          <div class="day-total">
+            <div class="donut" role="img" aria-label="Calories from protein 28%, carbs 46%, fat 26%"><span>2,110<small>kcal</small></span></div>
+            <div class="day-sum">
+              <p class="total-label">Day total</p>
+              <p class="total-kcal">2,110 kcal</p>
+              <ul class="legend">
+                <li class="p"><i aria-hidden="true"></i><b>154 g</b> protein <span>28%</span></li>
+                <li class="c"><i aria-hidden="true"></i><b>250 g</b> carbs <span>46%</span></li>
+                <li class="f"><i aria-hidden="true"></i><b>64 g</b> fat <span>26%</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="plate-foot">Nutrition from the Pure Prep food database. Your plan is sized to your own calories and macros.</p>
         </aside>
       </div>
     </section>
