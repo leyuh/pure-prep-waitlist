@@ -202,13 +202,13 @@
 
             <div class="field">
               <label for="email">Email</label>
-              <input class="input" id="email" name="entry.1866340081" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com" required aria-describedby="email-error" />
+              <input class="input" id="email" name="entry.1866340081" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com" enterkeyhint="next" required aria-describedby="email-error" />
               <p class="error" id="email-error" aria-live="polite"></p>
             </div>
 
             <div class="field">
               <label for="first-name">First name <span class="opt">(optional)</span></label>
-              <input class="input" id="first-name" name="entry.265234392" type="text" autocomplete="given-name" autocapitalize="words" maxlength="80" />
+              <input class="input" id="first-name" name="entry.265234392" type="text" autocomplete="given-name" autocapitalize="words" maxlength="80" enterkeyhint="next" />
             </div>
 
             <fieldset class="rank" id="rank">
@@ -346,6 +346,42 @@
     document.getElementById('rank-help').textContent = 'Tap items in order of importance: first tap = 1 (most important). Tap again to clear. Rank as many as you like, or skip.';
     renderRanks();
 
+
+    // Enter/Go on a phone keyboard must never submit the form (it used to skip the
+    // ranking). Enter in a text field moves to the next field; after the last text
+    // field it closes the keyboard and scrolls to the ranking. Only an actual tap/click
+    // on the submit button (or Enter/Space on the focused button) submits.
+    var textFields = [].slice.call(form.querySelectorAll('input[type="email"], input[type="text"]'));
+    function isTextField(el) { return textFields.indexOf(el) !== -1; }
+    function advanceFrom(field) {
+      var i = textFields.indexOf(field);
+      if (i > -1 && i < textFields.length - 1) { textFields[i + 1].focus(); return; }
+      field.blur();
+      var first = rankButtons.filter(function (b) { return !b.hidden; })[0];
+      if (rankBox.scrollIntoView) rankBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (first) { try { first.focus({ preventScroll: true }); } catch (err) { first.focus(); } }
+    }
+    textFields.forEach(function (f) {
+      f.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) { e.preventDefault(); advanceFrom(f); }
+      });
+    });
+    var lastButtonPress = 0;
+    function markPress() { lastButtonPress = Date.now(); }
+    button.addEventListener('pointerdown', markPress);
+    button.addEventListener('touchstart', markPress, { passive: true });
+    button.addEventListener('mousedown', markPress);
+    button.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') markPress(); });
+    function fromRealPress() { return Date.now() - lastButtonPress < 3000; }
+    // Implicit submission (Enter in a field) fires a synthetic click on the button
+    // while focus is still in the text field; block that.
+    button.addEventListener('click', function (e) {
+      if (isTextField(document.activeElement) && !fromRealPress()) {
+        e.preventDefault();
+        advanceFrom(document.activeElement);
+      }
+    });
+
     function setEmailError(msg) {
       emailError.textContent = msg;
       if (msg) email.setAttribute('aria-invalid', 'true');
@@ -358,6 +394,7 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (!fromRealPress() && isTextField(document.activeElement)) { advanceFrom(document.activeElement); return; }
       status.textContent = '';
       var value = email.value.trim();
       if (!value) { setEmailError('Please enter your email.'); email.focus(); return; }
